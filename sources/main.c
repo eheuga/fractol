@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <X11/keysym.h>
 #include <stdio.h>
+#include <math.h>
+
 
 typedef struct s_data{
     void *mlx;
@@ -23,7 +25,7 @@ int create_color (int r, int g, int b){
     return (r << 16 | g << 8 | b);
 }
 
-
+ 
 void do_maths (t_data *data){
     double cx;
     double cy;
@@ -43,29 +45,35 @@ void do_maths (t_data *data){
         a =new_a;
         iter++;
     }
+
     if (iter >= data->maxiter){
         color = create_color(0,0,0);
         mlx_pixel_put(data->mlx, data->win, data->x, data->y, color);
     }
 
     else {
-        color = create_color(iter % 16 * 16, iter % 8 * 8, 0);
+        // AUTRE COULEURS 
+        //color = create_color(iter % 16 * 16, iter % 8 * 8, 0);
+        //color = create_color(iter % 17 * 15, iter % 13 * 19, iter % 7 * 36);
+        //color = create_color(iter % 25 * 10, iter % 8 * 8, 255);
+        //color = create_color(255 - (iter * 150/ data->maxiter), 0 ,300 -( iter * 150/ data->maxiter));
+        color = create_color(iter, iter, iter);
         mlx_pixel_put(data->mlx, data->win, data->x, data->y, color);
     }
-
+    
 }
 
 void draw (t_data *data){
     data->x = 0;
     data->y = 0;
-    while (data->x < data->lenght){
-    
+    while (data->x < data->lenght)
+    {
     data->y = 0;
-    while (data->y < data->height){
+        while (data->y < data->height){
 
-        do_maths(data);
-        data->y++;
-    }
+            do_maths(data);
+            data->y++;
+        }
     data->x++;
     }
 }
@@ -77,11 +85,16 @@ int my_keyhook(int keycode, t_data* data)
     }
 
     if (keycode == XK_i){
-        if (data->xmax - data->xmin > 0.0000000001){
+        if (data->xmax - data->xmin > 0.0000000000000000001){
             data->xmin += (data->xmax - data->xmin) * 0.1;
             data->xmax -= (data->xmax - data->xmin) * 0.1;
             data->ymin += (data->ymax - data->ymin) * 0.1;
             data->ymax -= (data->ymax - data->ymin) * 0.1;
+        
+            double zoom_level = 4.0 / (data->xmax - data->xmin);
+            data->maxiter = (int)(50 * (1.0 + log10(zoom_level)));
+            if (data->maxiter > 2000)
+                data->maxiter = 2000;
         }
     }
     if (keycode == XK_o){
@@ -92,26 +105,29 @@ int my_keyhook(int keycode, t_data* data)
     }
 
 
+    if (keycode == XK_w){
+        data->ymin += (data->xmax - data->xmin) * 0.1;
+        data->ymax += (data->ymax - data->ymin) * 0.1;
+    }
+
     if (keycode == XK_a){
         data->xmin -= (data->xmax - data->xmin) * 0.1;
         data->xmax -= (data->ymax - data->ymin) * 0.1;
 
     }
 
+    if (keycode == XK_s){
+        data->ymin -= (data->xmax - data->xmin) * 0.1;
+        data->ymax -= (data->ymax - data->ymin) * 0.1;
+    }
+
+
     if (keycode == XK_d){
         data->xmin += (data->xmax - data->xmin) * 0.1;
         data->xmax += (data->ymax - data->ymin) * 0.1;
     }
 
-    if (keycode == XK_w){
-        data->ymin += (data->xmax - data->xmin) * 0.1;
-        data->ymax += (data->ymax - data->ymin) * 0.1;
-    }
     
-    if (keycode == XK_s){
-        data->ymin -= (data->xmax - data->xmin) * 0.1;
-        data->ymax -= (data->ymax - data->ymin) * 0.1;
-    }
 
     draw(data);
     return (0);    
@@ -144,9 +160,6 @@ int my_mouse_hook(int button, int x, int y, t_data *data)
 int main (){
 
     t_data data;
-
-    data.mlx = mlx_init();
-    data.win = mlx_new_window(data.mlx, 800, 800, "test");
     
     data.x = 0;
     data.y = 0;
@@ -157,6 +170,10 @@ int main (){
     data.height = 800;
     data.lenght = 800;
     data.maxiter = 100;
+
+    data.mlx = mlx_init();
+    data.win = mlx_new_window(data.mlx, data.lenght, data.height, "Fractol");
+    
 
     draw(&data);
     mlx_hook(data.win, 02, 1L <<0, &my_keyhook, &data);
