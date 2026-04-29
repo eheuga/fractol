@@ -6,7 +6,7 @@ MLX     = $(MLX_DIR)/libmlx.a
 MLX_INC = -I$(MLX_DIR)
 MLX_LNK = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 
-SRCS = sources/main.c sources/mandelbrot.c sources/julia.c sources/colors.c sources/render.c sources/utils.c sources/hooks.c
+SRCS = sources/main.c sources/mandelbrot.c sources/julia.c sources/colors.c sources/render.c sources/utils.c sources/hooks/keyhooks.c sources/hooks/mousehooks.c sources/hooks/close_window.c
 OBJS = $(SRCS:.c=.o)
 
 

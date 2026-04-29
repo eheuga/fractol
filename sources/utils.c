@@ -1,6 +1,5 @@
 #include "fractol.h"
 
-
 int	print_usage(void)
 {
 	write(1, "Usage:\n", 7);
@@ -10,37 +9,37 @@ int	print_usage(void)
 	return (1);
 }
 
-double ft_atof(char *str)
+double	ft_atof(char *str)
 {
-    double  result;
-    double  decimal;
-    int     sign;
-    int     i;
+	double result;
+	double decimal;
+	int sign;
+	int i;
 
-    result = 0;
-    decimal = 1;
-    sign = 1;
-    i = 0;
-    if (str[i] == '-' || str[i] == '+')
-    {
-        if (str[i] == '-')
-            sign = -1;
-        i++;
-    }
-    while (str[i] >= '0' && str[i] <= '9')
-    {
-        result = result * 10 + (str[i] - '0');
-        i++;
-    }
-    if (str[i] == '.')
-    {
-        i++;
-        while (str[i] >= '0' && str[i] <= '9')
-        {
-            decimal /= 10;
-            result += (str[i] - '0') * decimal;
-            i++;
-        }
-    }
-    return (result * sign);
+	result = 0;
+	decimal = 1;
+	sign = 1;
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	if (str[i] == '.')
+	{
+		i++;
+		while (str[i] >= '0' && str[i] <= '9')
+		{
+			decimal /= 10;
+			result += (str[i] - '0') * decimal;
+			i++;
+		}
+	}
+	return (result * sign);
 }
