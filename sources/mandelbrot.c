@@ -10,7 +10,7 @@ int mandelbrot (double cx, double cy, int maxiter)
 
     int iter = 0;
 
-    while(module2 < 4 && iter <= maxiter){
+    while(module2 < 4 && iter < maxiter){
 
         new_zr = (zr * zr) - (zi * zi) + cx;
         zi = 2 * zr * zi + cy;

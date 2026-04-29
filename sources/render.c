@@ -1,19 +1,27 @@
-void compute_pixel(t_data *data)
-{
-    double cr = (data->x / data->lenght) * (data->xmax - data->xmin) + data->xmin;
-    double ci = data->ymax - (data->y / data->height) * (data->ymax - data->ymin);
-    int    iter;
-    int    color;
+#include "fractol.h"
 
-    if (data->fractal_type == MANDELBROT)
-        iter = mandelbrot(cr, ci, data->maxiter);
-    else
-        iter = julia(cr, ci, data->cx, data->cy, data->maxiter);
+void my_put_pixel(t_data *data, double x, double y, int color){
 
-    if (iter >= data->maxiter)
-        color = 0;
-    else
-        color = pick_color(iter);
+    int offset;
 
-    my_put_pixel(data, data->x, data->y, color);
+    offset = (y * data->line_bytes)  + ( x * 4);
+
+    if (x >= 0 && x < data->lenght &&  y >= 0 && y < data->height){
+        if (data->endian == 1)
+        {
+            data->buffer[offset + 0] = (color >> 24);
+            data->buffer[offset + 1] = (color >> 16) & 0xFF;
+            data->buffer[offset + 2] = (color >> 8) & 0xFF;
+            data->buffer[offset + 3] = (color) & 0xFF;
+        }
+        else if (data->endian == 0)
+        {
+            data->buffer[offset + 0] = (color) & 0xFF;
+            data->buffer[offset + 1] = (color >> 8) & 0xFF;
+            data->buffer[offset + 2] = (color >> 16) & 0xFF;
+            data->buffer[offset + 3] = (color >> 24);
+        }
+
+    }
+
 }
