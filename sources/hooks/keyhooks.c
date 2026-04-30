@@ -41,10 +41,7 @@ static void	handle_reset(t_data *data)
 int	my_keyhook(int keycode, t_data *data)
 {
 	if (keycode == XK_Escape)
-	{
-		mlx_destroy_window(data->mlx, data->win);
-		exit(0);
-	}
+		close_window(data);
 	handle_move(data, keycode);
 	if (keycode == XK_r)
 		handle_reset(data);

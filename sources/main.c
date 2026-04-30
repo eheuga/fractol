@@ -19,6 +19,9 @@ static void	init_data(t_data *data, char *name)
 	data->height = 800;
 	data->lenght = 800;
 	data->maxiter = 100;
+	data->mlx = NULL;
+	data->win = NULL;
+	data->image = NULL;
 	data->mlx = mlx_init();
 	data->win = mlx_new_window(data->mlx, data->lenght, data->height, "Fractol");
 	data->image = mlx_new_image(data->mlx, data->lenght, data->height);
