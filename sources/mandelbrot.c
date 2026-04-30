@@ -15,8 +15,8 @@ int	mandelbrot(double cx, double cy, int maxiter)
 	iter = 0;
 	while (module2 < 4 && iter < maxiter)
 	{
-		new_zr = (zr * zr) - (zi * zi) + cx;
-		zi = 2 * zr * zi + cy;
+		new_zr = zr * zr -  zi * zi + cx;
+		zi =  2* zi*zr+ cy;
 		zr = new_zr;
 		module2 = zr * zr + zi * zi;
 		iter++;
@@ -45,7 +45,7 @@ void	draw_mandelbrot(t_data *data)
 			if (iter >= data->maxiter)
 				color = create_color(0, 0, 0);
 			else
-				color = create_color(iter % 25 * 10, iter % 8 * 8, 255);
+				color = create_color(iter * 0, iter % 7 * 18 , 4);
 			my_put_pixel(data, data->x, data->y, color);
 			data->y++;
 		}

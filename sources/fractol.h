@@ -32,6 +32,7 @@ typedef struct s_data
 	char	*name;
 }			t_data;
 
+int		create_color(int r, int g, int b);
 void    draw(t_data *data);
 int     close_window(t_data *data);
 int     my_keyhook(int keycode, t_data *data);

@@ -1,36 +1,26 @@
 #include "../fractol.h"
 
+static void	zoom_at_point(t_data *data, double mx, double my, double zoom)
+{
+	data->xmin = mx + (data->xmin - mx) * zoom;
+	data->xmax = mx + (data->xmax - mx) * zoom;
+	data->ymin = my + (data->ymin - my) * zoom;
+	data->ymax = my + (data->ymax - my) * zoom;
+}
+
 int	my_mouse_hook(int button, int x, int y, t_data *data)
 {
-	double	range_x;
-	double	range_y;
-	double	zoom_level;
+	double	mx;
+	double	my;
 
-	(void)x;
-	(void)y;
-	range_x = data->xmax - data->xmin;
-	range_y = data->ymax - data->ymin;
-	if (button == 4)
-	{
-		if (data->xmax - data->xmin > 0.00000000001)
-		{
-			data->xmin += range_x * 0.1;
-			data->xmax -= range_x * 0.1;
-			data->ymin += range_y * 0.1;
-			data->ymax -= range_y * 0.1;
-			zoom_level = 4.0 / range_x;
-			data->maxiter = (int)(50 * (1.0 + log10(zoom_level)));
-			if (data->maxiter > 500)
-				data->maxiter = 500;
-		}
-	}
+	mx = (x / data->lenght) * (data->xmax - data->xmin) + data->xmin;
+	my = data->ymax - (y / data->height) * (data->ymax - data->ymin);
+	if (button == 4 && data->xmax - data->xmin > 0.00000000001)
+		zoom_at_point(data, mx, my, 0.9);
 	else if (button == 5)
-	{
-		data->xmin -= range_x * 0.1;
-		data->xmax += range_x * 0.1;
-		data->ymin -= range_y * 0.1;
-		data->ymax += range_y * 0.1;
-	}
+		zoom_at_point(data, mx, my, 1.0 / 0.9);
+	else
+		return (0);
 	draw(data);
 	return (0);
 }
