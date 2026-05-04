@@ -1,14 +1,14 @@
-##
-## Makefile for MiniLibX in /home/boulon/work/c/raytraceur/minilibx
-## 
-## Made by Olivier Crouzet
-## Login   <ol@epitech.net>
-## 
-## Started on  Tue Oct  5 15:56:43 2004 Olivier Crouzet
-## Last update Tue May 15 15:44:41 2007 Olivier Crouzet
-##
-
-## Please use configure script
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: emheuga <emheuga@student.42angouleme.fr>   +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created:  Tue May 15 15:44:4 by emheuga           #+#    #+#              #
+#    Updated: 2026/05/04 12:28:31 by emheuga          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 
 all	: do_configure

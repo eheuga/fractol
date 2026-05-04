@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mandelbrot.c                                       :+:      :+:    :+:   */
+/*   my_put_pixel.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emheuga <emheuga@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,26 +12,26 @@
 
 #include "fractol.h"
 
-int	mandelbrot(double cx, double cy, int maxiter)
+void	my_put_pixel(t_data *data, double x, double y, int color)
 {
-	double	module2;
-	double	zr;
-	double	zi;
-	double	new_zr;
-	int		iter;
+	int	offset;
 
-	module2 = 0;
-	zr = 0;
-	zi = 0;
-	new_zr = 0;
-	iter = 0;
-	while (module2 < 4 && iter < maxiter)
+	offset = (y * data->line_bytes) + (x * (data->pixel_bits / 8));
+	if (x >= 0 && x < data->lenght && y >= 0 && y < data->height)
 	{
-		new_zr = zr * zr - zi * zi + cx;
-		zi = 2 * zi * zr + cy;
-		zr = new_zr;
-		module2 = zr * zr + zi * zi;
-		iter++;
+		if (data->endian == 1)
+		{
+			data->buffer[offset + 0] = (color >> 24);
+			data->buffer[offset + 1] = (color >> 16) & 0xFF;
+			data->buffer[offset + 2] = (color >> 8) & 0xFF;
+			data->buffer[offset + 3] = (color) & 0xFF;
+		}
+		else if (data->endian == 0)
+		{
+			data->buffer[offset + 0] = (color) & 0xFF;
+			data->buffer[offset + 1] = (color >> 8) & 0xFF;
+			data->buffer[offset + 2] = (color >> 16) & 0xFF;
+			data->buffer[offset + 3] = (color >> 24);
+		}
 	}
-	return (iter);
 }

@@ -1,4 +1,16 @@
-#include "../fractol.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mousehooks.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: emheuga <emheuga@student.42angouleme.fr>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/04 12:28:05 by emheuga           #+#    #+#             */
+/*   Updated: 2026/05/04 14:03:20 by emheuga          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "fractol.h"
 
 static void	zoom_at_point(t_data *data, double mx, double my, double zoom)
 {

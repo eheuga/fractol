@@ -1,32 +1,58 @@
-NAME    = fractol
-CC      = cc
-CFLAGS  = -Wall -Wextra -Werror -g
-MLX_DIR = ./minilibx-linux
-MLX     = $(MLX_DIR)/libmlx.a
-MLX_INC = -I$(MLX_DIR)
-MLX_LNK = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: emheuga <emheuga@student.42angouleme.fr>   +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/05/04 12:00:00 by emheuga           #+#    #+#              #
+#    Updated: 2026/05/04 15:05:19 by emheuga          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-SRCS = sources/main.c sources/mandelbrot.c sources/julia.c sources/colors.c sources/render.c sources/utils.c sources/hooks/keyhooks.c sources/hooks/mousehooks.c sources/hooks/close_window.c
-OBJS = $(SRCS:.c=.o)
+NAME			= fractol
 
+SRCS			= sources/main.c sources/draw.c sources/my_put_pixel.c \
+				  sources/mandelbrot.c sources/julia.c \
+				  sources/color_manager.c sources/print_usage.c \
+				  sources/utils/ft_atof.c sources/utils/ft_strcmp.c \
+				  sources/hooks/close_window.c sources/hooks/keyhooks.c \
+				  sources/hooks/mousehooks.c
 
-all: $(MLX) $(NAME)
+BONUS_SRCS		= bonus/burning_ship.c bonus/mandelbar.c
 
-$(MLX):
-	$(MAKE) -C $(MLX_DIR) -f Makefile.mk || true
+OBJS			= $(SRCS:.c=.o)
+BONUS_OBJS		= $(BONUS_SRCS:.c=.o)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(MLX_LNK) -no-pie -o $(NAME)
+CC				= cc
+CFLAGS			= -Werror -Wextra -Wall
+RM				= rm -f
 
-%.o: %.c
-	$(CC) $(CFLAGS) $(MLX_INC) -I includes/ -c $< -o $@
+MLX_DIR			= minilibx-linux
+MLX				= $(MLX_DIR)/libmlx.a
+MLX_FLAGS		= -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 
-clean:
-	rm -f $(OBJS)
+%.o : %.c
+	$(CC) $(CFLAGS) -I$(MLX_DIR) -Iinclude -c $< -o $@
 
-fclean: clean
-	rm -f $(NAME)
+all : $(NAME)
 
-re: fclean all
+$(MLX) :
+	make -C $(MLX_DIR)
 
-.PHONY: all clean fclean re
+$(NAME) : $(MLX) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(MLX_FLAGS) -o $(NAME)
+
+bonus : $(MLX) $(OBJS) $(BONUS_OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(BONUS_OBJS) $(MLX_FLAGS) -o $(NAME)
+
+clean :
+	$(RM) $(OBJS) $(BONUS_OBJS)
+	make -C $(MLX_DIR) clean
+
+fclean : clean
+	$(RM) $(NAME)
+
+re : fclean all
+
+.PHONY : all clean fclean re bonus

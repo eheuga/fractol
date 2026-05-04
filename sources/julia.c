@@ -1,8 +1,18 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   julia.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: emheuga <emheuga@student.42angouleme.fr>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/04 12:28:05 by emheuga           #+#    #+#             */
+/*   Updated: 2026/05/04 15:05:19 by emheuga          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fractol.h"
 
-int	julia(double zr, double zi, double cx, double cy, int maxiter)
+int	julia(t_data *data, double zr, double zi)
 {
 	double	module2;
 	double	new_zr;
@@ -11,43 +21,13 @@ int	julia(double zr, double zi, double cx, double cy, int maxiter)
 	module2 = 0;
 	new_zr = 0;
 	iter = 0;
-	while (module2 < 4 && iter < maxiter)
+	while (module2 < 4 && iter < data->maxiter)
 	{
-		new_zr = (zr * zr) - (zi * zi) + cx;
-		zi = 2 * zr * zi + cy;
+		new_zr = (zr * zr) - (zi * zi) + data->cx;
+		zi = 2 * zr * zi + data->cy;
 		zr = new_zr;
 		module2 = zr * zr + zi * zi;
 		iter++;
 	}
 	return (iter);
-}
-
-void	draw_julia(t_data *data)
-{
-	int		iter;
-	int 	color;
-	double 	zr;
-	double 	zi;
-
-	data->x = 0;
-	while (data->x < data->lenght)
-	{
-		data->y = 0;
-		while (data->y < data->height)
-		{
-			zr = (data->x / data->lenght) * (data->xmax - data->xmin)
-				+ data->xmin;
-			zi = data->ymax - (data->y / data->height) * (data->ymax
-					- data->ymin);
-			iter = julia(zr, zi, data->cx, data->cy, data->maxiter);
-			if (iter >= data->maxiter)
-				color = create_color(0, 0, 0);
-			else
-				color = create_color(iter % 25 * 10, iter % 8 * 8, 255);
-			my_put_pixel(data, data->x, data->y, color);
-			data->y++;
-		}
-		data->x++;
-	}
-	mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
 }

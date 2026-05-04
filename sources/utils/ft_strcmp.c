@@ -1,42 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new_win.c                                          :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emheuga <emheuga@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 12:28:05 by emheuga           #+#    #+#             */
-/*   Updated: 2026/05/04 12:28:31 by emheuga          ###   ########.fr       */
+/*   Updated: 2026/05/04 15:05:19 by emheuga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fractol.h"
 
-
-#include "mlx.h"
-
-
-void *mlx;
-void *win1;
-void *win2;
-
-
-
-int gere_mouse(int x,int y,int button,void*toto)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-  printf("Mouse event - new win\n");
-  mlx_destroy_window(mlx,win1);
-  win1 = mlx_new_window(mlx,random()%500,random()%500,"new win");
-  mlx_mouse_hook(win1,gere_mouse,0);
-}
+	int	i;
 
-
-int main()
-{
-  srandom(time(0));
-  mlx = mlx_init();
-  win1 = mlx_new_window(mlx,300,300,"win1");
-  win2 = mlx_new_window(mlx,600,600,"win2");
-  mlx_mouse_hook(win1,gere_mouse,0);
-  mlx_mouse_hook(win2,gere_mouse,0);
-  mlx_loop(mlx);
+	i = 0;
+	while (s1[i] && (unsigned char)s1[i] == (unsigned char)s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
